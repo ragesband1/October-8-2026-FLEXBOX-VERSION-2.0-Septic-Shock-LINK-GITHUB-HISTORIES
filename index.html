@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NO LINK = BROWSE DIALOG - CHAPTER 1-49</title>
+<style>
+body {
+  margin: 0; padding: 0;
+  height: 100vh; width: 100vw;
+  overflow: hidden;
+  background: black;
+  position: relative;
+  font-family: Arial, sans-serif;
+}
+.background {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-image: url('1.png');
+  background-size: cover; background-position: center;
+  transition: opacity 0.4s ease;
+  z-index: 1;
+  filter: contrast(1.2) saturate(1.4) brightness(1.1);
+}
+.gradient-overlay {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(255,0,255,0.4);
+  animation: bodyGradient 2.5s infinite linear, septicFlash 0.2s infinite;
+  z-index: 2;
+}
+.border {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  box-sizing: border-box;
+  border: 12px solid transparent;
+  border-image-slice: 1;
+  border-image-source: linear-gradient(45deg,magenta,deeppink,red,purple);
+  border-image-repeat: stretch;
+  animation: borderPulse 0.7s infinite, septicShock 0.12s infinite;
+  z-index: 3;
+}
+@keyframes septicShock {
+  0% { transform: translate(0,0) }
+  15% { transform: translate(-3px,2px) skew(1.5deg) }
+  30% { transform: translate(3px,-2px) skew(-1.5deg) }
+  100% { transform: translate(0,0) }
+}
+@keyframes septicFlash {
+  0%,90%,100% { opacity: 1 }
+  95% { opacity: 0.8; filter: brightness(2) }
+}
+@keyframes bodyGradient {
+  0% { filter: hue-rotate(0deg) }
+  100% { filter: hue-rotate(360deg) }
+}
+@keyframes borderPulse {
+  0% { border-color: magenta }
+  50% { border-color: cyan }
+  100% { border-color: magenta }
+}
+.grid-container {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  display: grid;
+  grid-template-columns: repeat(10,80px);
+  grid-template-rows: repeat(5,80px);
+  gap: 10px;
+  z-index: 10;
+}
+.box {
+  width: 80px; height: 80px;
+  display: flex; justify-content: center; align-items: center;
+  background: transparent;
+  border: 3px solid transparent;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 10px; font-weight: 900;
+  color: white;
+  animation: neonBlink 1s infinite alternate;
+  box-shadow: inset 0 0 0 3px var(--neon-color,magenta),
+              0 0 10px var(--neon-color),
+              0 0 20px var(--neon-color);
+  text-align: center;
+}
+@keyframes neonBlink {
+  0% { text-shadow: 0 0 10px cyan }
+  100% { text-shadow: 0 0 20px magenta }
+}
+.box:nth-child(odd) { --neon-color: magenta }
+.box:nth-child(even) { --neon-color: cyan }
+.modal {
+  display: none; position: fixed;
+  z-index: 999; left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+}
+.modal-content {
+  background: #fefefe;
+  margin: 15% auto; padding: 20px;
+  border-radius: 10px;
+  width: 80%; max-width: 500px;
+  position: relative; text-align: center;
+}
+.close {
+  position: absolute; top: 10px; right: 15px;
+  font-size: 28px; font-weight: bold; cursor: pointer;
+}
+.link-button {
+  display: inline-block;
+  background: blue; color: #fff;
+  padding: 12px 20px; margin-top: 10px;
+  border-radius: 5px; border: none;
+  cursor: pointer; font-weight: 900;
+  min-width: 120px; text-decoration: none;
+  word-break: break-all; font-size: 11px;
+}
+.browse-box {
+  border: 4px solid lime;
+  box-shadow: 0 0 20px lime;
+  animation: septicShock 0.1s infinite;
+}
+</style>
+</head>
+<body>
+
+<div class="background"></div>
+<div class="gradient-overlay"></div>
+<div class="border"></div>
+<div class="grid-container" id="grid"></div>
+
+<!-- DIALOG 1 -->
+<div id="myModal" class="modal">
+  <div class="modal-content" id="modalContent">
+    <span class="close" onclick="closeAll()">×</span>
+    <p>CLICK THIS LINK HERE:</p>
+    <button class="link-button" id="noLinkBtn">No Link</button>
+  </div>
+</div>
+
+<!-- DIALOG 2 - BROWSE MAIN PAGE -->
+<div id="browseModal" class="modal">
+  <div class="modal-content browse-box">
+    <span class="close" onclick="closeAll()">×</span>
+    <p style="font-weight:900;font-size:18px;color:blue;">BROWSING MAIN PAGE...</p>
+    <p>Septic Shock Main - 13 Images Halo-Halo</p>
+    <button class="link-button" style="background:lime;color:black;" onclick="goMain()">GO TO MAIN</button>
+  </div>
+</div>
+
+<script>
+let index = 1;
+const totalImages = 13;
+const bg = document.querySelector('.background');
+setInterval(() => {
+  bg.style.opacity = 0;
+  setTimeout(() => {
+    bg.style.backgroundImage = `url('${index}.png')`;
+    bg.style.opacity = 1;
+    index = (index % 13) + 1;
+  }, 400);
+}, 2000);
+
+// 49 LINKS CHAPTER 1-49 COMBINED
+const links = [
+  "https://ragesband1.github.io/October-4-2026-Chapter-16---Bite-Of-A-Door-Knob/",
+  "https://ragesband1.github.io/October-4-2026-Chapter-17---Legend-Of-Eiffel-Tower/",
+  "https://ragesband1.github.io/October-4-2026-Chapter-18---The-Savage-And-The-Hunter/",
+  "https://ragesband1.github.io/October-5-2026-Chapter-19-Bedtime-Stories---Death-In-Computer-Shops/",
+  "https://ragesband1.github.io/October-5-2026-Chapter-20---Treasure-Hunter-3D-RPG/",
+  "https://ragesband1.github.io/October-5-2026-Chapter-21---Legend-Of-Donald-Ducks/",
+  "https://ragesband1.github.io/October-5-2026-Chapter-22-Mermaid-And-The-Sniper---Full-Game/",
+  "https://ragesband1.github.io/October-5-2026-Chapter-23---Bad-Guy-In-Disguise/",
+  "https://ragesband1.github.io/October-5-2026-Chapter-24---Justice-For-The-Labor-Day-RPG/",
+  "https://ragesband1.github.io/October-5-2026-Chapter-25-Foolish-World---Full-Game/",
+  "https://ragesband1.github.io/October-5-2026-Chapter-26-Clever-Cheap---Full-Game/",
+  "https://ragesband1.github.io/October-5-2026-Chapter-27-Understanding-Treatment---Unique-Game/",
+  "https://ragesband1.github.io/October-5-2026-Chapter-28-Legend-Of-The-Rabbit/",
+  "https://ragesband1.github.io/October-5-2026-Chapter-29---Careless-Whisper-3D-Game/",
+  "https://ragesband1.github.io/October-5-2026-Chapter-30---Perfect-Friend/",
+  "https://ragesband1.github.io/October-6-2026-Chapter-31---Birds-Vs.-Bats/",
+  "https://ragesband1.github.io/October-6-2026-Chapter-32---Cranes-Vs.-Hunters/",
+  "https://ragesband1.github.io/October-6-2026-Chapter-33---The-Mad-Hunter/",
+  "https://ragesband1.github.io/October-6-2026-Chapter-34---The-Cheshire-Rabbit/",
+  "https://ragesband1.github.io/October-6-2026-Chapter-35---The-Parable-Of-A-Lost-Name/",
+  "https://ragesband1.github.io/October-6-2026-Chapter-36---Legend-Of-The-Tree/",
+  "https://ragesband1.github.io/October-6-2026-Chapter-37---Adventures-Of-Jack-Sparrow/",
+  "https://ragesband1.github.io/October-6-2026-Chapter-38---The-Guild-Of-Our-Lives-RPG/",
+  "https://ragesband1.github.io/October-6-2026-Chapter-39-An-Eagle-And-A-Lion/",
+  "https://ragesband2.github.io/October-6-2026-Chapter-40-A-Reindeer-And-An-Antelope---2D-Humble-Edition/",
+  "https://ragesband2.github.io/October-6-2026-Chapter-41-Broken-Orders/",
+  "https://ragesband2.github.io/October-6-2026-Chapter-42---Crisis-On-A-Race-Of-Time---FIXED/",
+  "https://ragesband2.github.io/October-6-2026-Chapter-43---The-Black-Raven/",
+  "https://ragesband2.github.io/October-6-2026-Chapter-44-Betrayals-Vs-Killers---Castle-Jerboa/",
+  "https://ragesband2.github.io/October-6-2026-Chapter-45-Knock-Out---Beautiful-3D-Arena/",
+  "https://ragesband2.github.io/October-6-2026-Chapter-46---Humblebee/",
+  "https://ragesband2.github.io/October-6-2026-Chapter-47-Candle-Of-Life---FIXED-SIMPLE-WORKING/",
+  "https://ragesband2.github.io/October-6-2026-Chapter-48---The-Lost-Gift-3D-RPG/",
+  "https://ragesband2.github.io/October-6-2026-Chapter-49---The-Legend-Of-Cheating/",
+  "https://ragesband2.github.io/October-6-2026-Chapter-50-The-Cursed-Story---Beautiful-Arena/",
+  "https://ragesband1.github.io/October-7-2026-Chapter-51---Monkeys-Vs.-Baboons/",
+  "https://ragesband1.github.io/October-7-2026-Chapter-52---Legend-Days-Of-Christopher-Robin/",
+  "https://ragesband1.github.io/October-7-2026-Chapter-53-Legend-Of-The-Book---Beautiful-Final/",
+  "https://ragesband1.github.io/October-7-2026-Chapter-54-The-Legendary-Novels---School-Quiz/",
+  "https://ragesband1.github.io/October-7-2026-Chapter-55-Legend-Of-The-Thieves---Beautiful-Cafe/",
+  "https://ragesband1.github.io/October-7-2026-Chapter-56---Legend-Of-A-Liar-3D-Interactive-RPG/",
+  "https://ragesband1.github.io/October-7-2026-Chapter-57---The-Traitor-And-A-Debt-RPG-/",
+  "https://ragesband1.github.io/October-7-2026-Chapter-58-The-Thirsty-Beaker-/",
+  "https://ragesband1.github.io/October-7-2026-Chapter-59---A-Dead-Target/",
+  "https://ragesband1.github.io/October-7-2026-Chapter-60---Legend-Of-A-Bully/",
+  "https://ragesband1.github.io/October-7-2026-Chapter-61-The-Parable-Of-A-Lost-Creature/",
+  "https://ragesband1.github.io/October-7-2026-Chapter-62---The-Mighty-Cast/",
+  "https://ragesband1.github.io/October-7-2026-Chapter-63---One-Direction/",
+  "https://ragesband1.github.io/October-7-2026-Chapter-64---The-Cursed-Thing-RPG-Adventure-/"
+];
+
+const container = document.getElementById('grid');
+
+// FLEXBOX SEPTIC SHOCK 1-49 HA!!!!
+for (let i = 0; i < 49; i++) {
+  let b = document.createElement('div');
+  b.className = 'box';
+  b.innerText = 'Septic Shock ' + (i + 1);
+  b.onclick = () => showDialog(links[i]);
+  container.appendChild(b);
+}
+
+// 50th BOX = MAIN NO LINK BROWSE NEW TAB
+let mainBox = document.createElement('div');
+mainBox.className = 'box';
+mainBox.innerText = 'Septic Shock MAIN';
+mainBox.style.setProperty('--neon-color','lime');
+mainBox.onclick = () => showDialog("");
+container.appendChild(mainBox);
+
+function showDialog(link) {
+  const modal = document.getElementById('myModal');
+  const content = document.getElementById('modalContent');
+  modal.style.display = 'block';
+  if (link && link !== "") {
+    content.innerHTML = `
+      <span class="close" onclick="closeAll()">×</span>
+      <p>CLICK THIS LINK HERE:</p>
+      <a href="${link}" target="_blank" class="link-button">${link}</a>
+    `;
+  } else {
+    content.innerHTML = `
+      <span class="close" onclick="closeAll()">×</span>
+      <p>CLICK THIS LINK HERE:</p>
+      <button class="link-button" id="noLinkBtn">No Link</button>
+    `;
+    setTimeout(() => {
+      document.getElementById('noLinkBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('myModal').style.display = 'none';
+        setTimeout(() => {
+          document.getElementById('browseModal').style.display = 'block';
+          window.open(window.location.href, '_blank');
+        }, 200);
+      });
+    }, 100);
+  }
+}
+
+function closeAll() {
+  document.getElementById('myModal').style.display = 'none';
+  document.getElementById('browseModal').style.display = 'none';
+}
+
+function goMain() {
+  closeAll();
+  window.open('index.html', '_blank');
+}
+
+window.onclick = (e) => {
+  if (e.target === document.getElementById('myModal')) {
+    document.getElementById('myModal').style.display = 'none';
+  }
+  if (e.target === document.getElementById('browseModal')) {
+    closeAll();
+  }
+};
+</script>
+
+</body>
+</html>
